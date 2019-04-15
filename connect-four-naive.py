@@ -4,17 +4,14 @@ import json
 
 sys.stderr.write("Connect Four Group 12 - Python\n")
 
-# This is fragile and relies on the fact that the driver always passes the
-# command line arguments in the order --player <p> --width <w> --height <h>.
-player = int(sys.argv[2]) # --player <p>
-width = int(sys.argv[4]) # --width <w>
-height = int(sys.argv[6]) # --height <h>
+player = int(sys.argv[2]) 
+width = int(sys.argv[4])
+height = int(sys.argv[6]) 
 
 sys.stderr.write("player = " + str(player) + '\n')
 sys.stderr.write(" width = " + str(width) + '\n')
 sys.stderr.write("height = " + str(height) + '\n')
 
-# Function to determine where a valid move can be made
 def valid_moves(state):
     """Returns the valid moves for the state as a list of integers."""
     grid = state['grid']
@@ -40,7 +37,6 @@ for line in sys.stdin:
     sys.stdout.write(msg + '\n')
     sys.stdout.flush()
 
-# Be a nice program and close the ports.
 sys.stdin.close()
 sys.stdout.close()
 sys.stderr.close()
