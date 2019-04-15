@@ -2,7 +2,7 @@ import random
 import sys
 import json
 
-#Print team name to file
+#Team 12
 sys.stderr.write("Connect Four Group 12 - Python\n")
 
 player = sys.argv[2] 
