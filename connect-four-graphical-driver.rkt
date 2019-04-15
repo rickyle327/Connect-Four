@@ -7,6 +7,7 @@
 (define WIDTH 7)
 
 ;;; These will eventually be command line arguments.
+;;; Replace 'define exe-1'path with path to python script executable, then (define arg-1 '()) to run python player against itself
 (define exe-1 "C:\\Program Files\\Racket\\Racket.exe")
 (define args-1 '("connect-four-naive.rkt"))
 ;;; Path to executable goes in 'define exe', empty parenthesis for args
