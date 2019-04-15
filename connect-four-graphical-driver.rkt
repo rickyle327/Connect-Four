@@ -9,8 +9,9 @@
 ;;; These will eventually be command line arguments.
 (define exe-1 "C:\\Program Files\\Racket\\Racket.exe")
 (define args-1 '("connect-four-naive.rkt"))
-(define exe-2 "C:\\Users\Ricky Le\\AppData\\Local\\Programs\\Python\\Python37\\python.exe")
-(define args-2 '("connect-four-naive.py"))
+;;; Path to executable goes in 'define exe', empty parenthesis for args
+(define exe-2 "C:\\Users\\Mikey\\Desktop\\Connect-Four-master\\Connect-Four-master\\dist\\connect-four-naive\\connect-four-naive.exe")
+(define args-2 '())
 
 ;;; (new-grid grid move player) -> (listof (listof (integer-in 0 2)))
 ;;;   grid : (listof (listof (integer-in 0 2)))
