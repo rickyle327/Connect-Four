@@ -8,7 +8,7 @@ The `valid_moves` function is what determines where moves are legal (mainly whet
 The `player_moves` function is what I added and determines how the computer makes its move. Essentially the `valid_moves` function will pass an array, from 0 to whatever the max_width of columns that have empty slots. The `player_moves` will select a column to 'drop' its token in, returning an int that denotes that column. Right now, this selection is random, but as we progress, I'm assuming we will want to add to it.
 
 ## To run
-Please ensure that the player and driver are in the same directory and the `define exe-2` points to the path of python player executable (this is under the dist director), then change define arg-2 to (define arg-2 '()) 
-To run against itself also replace player define exe-2 to the same path as above, then also change define arg-1 to same syntax as above.
+Please ensure that the player and driver are in the same directory and the `define exe-2` points to the path of python player executable (this is under the dist director), then change `define arg-2` to `(define arg-2 '())` 
+To run against itself also replace player `define exe-2` to the same path as above, then also change `define arg-1` to same syntax as above.
 
 PyInstaller was used to create the executable
