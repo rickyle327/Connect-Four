@@ -2,7 +2,7 @@ import random
 import sys
 import json
 
-sys.stderr.write("Connect Four - Python\n")
+sys.stderr.write("Connect Four Group 12 - Python\n")
 
 # This is fragile and relies on the fact that the driver always passes the
 # command line arguments in the order --player <p> --width <w> --height <h>.
