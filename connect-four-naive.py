@@ -2,32 +2,37 @@ import random
 import sys
 import json
 
+#Print team name to file
 sys.stderr.write("Connect Four Group 12 - Python\n")
 
-player = int(sys.argv[2]) 
-width = int(sys.argv[4])
-height = int(sys.argv[6]) 
+player = sys.argv[2] 
+width = sys.argv[4]
+height = sys.argv[6] 
 
-sys.stderr.write("player = " + str(player) + '\n')
-sys.stderr.write(" width = " + str(width) + '\n')
-sys.stderr.write("height = " + str(height) + '\n')
+sys.stderr.write("player = " + player)
+sys.stderr.write('\n')
+sys.stderr.write(" width = " + width)
+sys.stderr.write('\n')
+sys.stderr.write("height = " + height)
+sys.stderr.write('\n')
 
+#Check available moves on current grid
 def valid_moves(state):
-    """Returns the valid moves for the state as a list of integers."""
     grid = state['grid']
     moves = []
-    for i in range(width):
+    for i in range(int(width)):
         if grid[i][0] == 0:
             moves.append(i)
     return moves
 
 # Code block for adding AI behaviour (for now this is just naive)
+# Returns moves to make
 def player_actions(state):
     action = {}
     action['move'] = random.choice(valid_moves(state))
     return action
 
-# Loop reading the state from the driver and writing a random valid move.
+# Read state from driver, place moves.
 for line in sys.stdin:
     sys.stderr.write(line)
     state = json.loads(line)
