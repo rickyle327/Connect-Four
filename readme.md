@@ -12,3 +12,14 @@ Please ensure that the player and driver are in the same directory and the `defi
 To run against itself also replace player `define exe-2` to the same path as above, then also change `define arg-1` to same syntax as above.
 
 PyInstaller was used to create the executable
+
+
+## To Run Mac
+Change 'define exe-1 or exe-2' to the executable of the main source code file. 
+
+Example:
+;;; These will eventually be command line arguments.
+(define exe-1 "connect-four-naive")
+(define args-1 '())
+(define exe-2 "cf")
+(define args-2 '())
