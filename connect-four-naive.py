@@ -24,19 +24,23 @@ def valid_moves(grid):
             moves.append(i)
     return moves
 
-# Code block for adding AI behaviour (for now this is just naive)
-# Returns moves to make
-def player_actions(grid):
+
+def valid_smart(grid):
     action = {}
+    for i in range(int(width)):
+        for j in range(1,int(height)):
+            if grid[i][j] == int(player) and grid[i][j-1] == 0:
+                action['move'] = i
+                return action
+
     action['move'] = random.choice(valid_moves(grid))
     return action
-
 # Read state from driver, place moves.
 for line in sys.stdin:
     sys.stderr.write(line)
     state = json.loads(line)
     grid = state['grid']
-    action = player_actions(grid)
+    action = valid_smart(grid)
     msg = json.dumps(action)
     sys.stderr.write(msg + '\n')
     sys.stdout.write(msg + '\n')
