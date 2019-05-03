@@ -17,8 +17,7 @@ sys.stderr.write("height = " + height)
 sys.stderr.write('\n')
 
 #Check available moves on current grid
-def valid_moves(state):
-    grid = state['grid']
+def valid_moves(grid):
     moves = []
     for i in range(int(width)):
         if grid[i][0] == 0:
@@ -27,16 +26,17 @@ def valid_moves(state):
 
 # Code block for adding AI behaviour (for now this is just naive)
 # Returns moves to make
-def player_actions(state):
+def player_actions(grid):
     action = {}
-    action['move'] = random.choice(valid_moves(state))
+    action['move'] = random.choice(valid_moves(grid))
     return action
 
 # Read state from driver, place moves.
 for line in sys.stdin:
     sys.stderr.write(line)
     state = json.loads(line)
-    action = player_actions(state)
+    grid = state['grid']
+    action = player_actions(grid)
     msg = json.dumps(action)
     sys.stderr.write(msg + '\n')
     sys.stdout.write(msg + '\n')
