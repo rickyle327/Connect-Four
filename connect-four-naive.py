@@ -44,13 +44,15 @@ def toemptyspace(grid, i, j):
         return toemptyspace(grid, i, j+1)
 
 #Priority check for vertical moves
-def vertical_priority(grid, i, j, n = 1):
-    if j + n == int(height):
-        return n
-    elif grid[i][j+n] != int(player):
-        return n
-    else:
-        return vertical_priority(grid, i, j, n+1)
+def vertical_priority(grid, i, j):
+    for n in range(1,5):
+        if j+n == int(height):
+            return n-1
+        if int(grid[i][j+n]) != int(player):
+            return n-1
+        else:
+            continue
+    return 0
 
 #Generate a vertical moveset
 def vertical(grid, i, j):
@@ -115,19 +117,20 @@ def vertical(grid, i, j):
 def valid_smart(grid):
     action = {}
     val_moves = valid_moves(grid)
-    j = -1
 
-    final_move = moveset
+    final_move = {}
     final_move['priority'] = 0
 
     for i in val_moves:
+        j = 0
         j = toemptyspace(grid, i, j)
         v_move = vertical(grid, i, j)
 #        h_move = horizontal(grid, i, j)
 #        d_move = diagonal(grid, i, j)
 
         if v_move['priority'] > final_move['priority']:
-            final_move = v_move
+            final_move['priority'] = v_move['priority']
+            final_move['move'] = v_move['move']
 #        elif h_move['priority'] > final_move['priority']:
 #            final_move = h_move
 #        elif d_move['moved'] == True:
