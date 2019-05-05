@@ -35,7 +35,6 @@ def valid_moves(grid):
     return moves
 
 #Go to the space where the piece will be dropped
-
 def toemptyspace(grid, i, j):
     if j == int(height):
         return j
@@ -55,7 +54,7 @@ def vertical(grid, i, j):
 
 #Check for a valid horizontal move
 def horizontal(grid, i, j):
-    if i < int(width) and grid[i+1][j] == int(player):
+    if i+1 < int(width) and grid[i+1][j] == int(player):
         moveset['moved'] = True
         moveset['move'] = i   
     elif i > 0 and grid[i-1][j] == int(player):
