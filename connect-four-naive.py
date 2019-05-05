@@ -36,89 +36,110 @@ def valid_moves(grid):
 
 #Go to the space where the piece will be dropped
 def toemptyspace(grid, i, j):
-    if j == int(height):
+    if j == int(height) - 1:
         return j
     elif grid[i][j] == 0 and grid[i][j+1] !=0:
         return j
     else:
         return toemptyspace(grid, i, j+1)
-    
-#Check for a valid vertical move
-def vertical(grid, i, j):
-    if j > 0 and grid[i][j-1] == 0:
-        moveset['moved'] = True
-        moveset['move'] = i
+
+#Priority check for vertical moves
+def vertical_priority(grid, i, j, n = 1):
+    if j + n == int(height):
+        return n
+    elif grid[i][j+n] != int(player):
+        return n
     else:
-        moveset['moved'] = False
+        return vertical_priority(grid, i, j, n+1)
+
+#Generate a vertical moveset
+def vertical(grid, i, j):
+    moveset['move'] = i
+    moveset['priority'] = vertical_priority(grid, i, j)
     return moveset
+
+#def h_priority_left(grid, i, j, n = 1):
+#    if i + n < 0:
+#        return n-1
+#    elif grid[i-n][j]:
+
+
+#def horizontal_priority(grid, i, j):
+#    final_h = 0
 
 #Check for a valid horizontal move
-def horizontal(grid, i, j):
-    if i+1 < int(width) and grid[i+1][j] == int(player):
-        moveset['moved'] = True
-        moveset['move'] = i   
-    elif i > 0 and grid[i-1][j] == int(player):
-        moveset['moved'] = True
-        moveset['move'] = i
-    else:
-        moveset['moved'] = False
-    return moveset
+#def horizontal(grid, i, j):
+#   if i+1 < int(width) and grid[i+1][j] == int(player):
+#        moveset['priority'] = 1
+#        moveset['move'] = i   
+#    elif i > 0 and grid[i-1][j] == int(player):
+#        moveset['priority'] = 1
+#        moveset['move'] = i
+#    else:
+#        moveset['priority'] = 0
+#    return moveset
 
 #Left-side diagonal moveset
-def l_diag(grid, i, j):
-    if grid[i+1][j-1] == int(player):
-        moveset['moved'] = True
-        moveset['move'] = i 
-    elif grid[i+1][j+1] == int(player):
-        moveset['moved'] = True
-        moveset['move'] = i
-    else:
-        moveset['moved'] = False
-    return moveset
+#def l_diag(grid, i, j):
+#    if grid[i+1][j-1] == int(player):
+#        moveset['moved'] = True
+#        moveset['move'] = i 
+#    elif grid[i+1][j+1] == int(player):
+#        moveset['moved'] = True
+#        moveset['move'] = i
+#    else:
+#        moveset['moved'] = False
+#    return moveset
 
 #Right-side diagonal moveset
-def r_diag(grid, i, j):
-    if grid[i-1][j-1] == int(player):
-        moveset['moved'] = True
-        moveset['move'] = i 
-    elif grid[i-1][j+1] == int(player):
-        moveset['moved'] = True
-        moveset['move'] = i
-    else:
-        moveset['moved'] = False
-    return moveset
+#def r_diag(grid, i, j):
+#    if grid[i-1][j-1] == int(player):
+#        moveset['moved'] = True
+#        moveset['move'] = i 
+#    elif grid[i-1][j+1] == int(player):
+#        moveset['moved'] = True
+#        moveset['move'] = i
+#    else:
+#        moveset['moved'] = False
+#    return moveset
 
 #Master diagonal moveset
-def diagonal(grid, i, j):
-    if i < int(width):
-        moveset = l_diag(grid, i, j)
-    elif i > 0:
-        moveset = r_diag(grid, i, j)
-    return moveset
+#def diagonal(grid, i, j):
+#    if i+1 < int(width):
+#        moveset = l_diag(grid, i, j)
+#    elif i > 0:
+#        moveset = r_diag(grid, i, j)
+#    return moveset
 
 #Master moveset function
 def valid_smart(grid):
     action = {}
     val_moves = valid_moves(grid)
+    j = -1
+
+    final_move = moveset
+    final_move['priority'] = 0
+
     for i in val_moves:
         j = toemptyspace(grid, i, j)
         v_move = vertical(grid, i, j)
-        h_move = horizontal(grid, i, j)
-        d_move = diagonal(grid, i, j)
+#        h_move = horizontal(grid, i, j)
+#        d_move = diagonal(grid, i, j)
 
-        if v_move['moved'] == True:
-            action['move'] = v_move['move']
-            return action
-        elif h_move['moved'] == True:
-            action['move'] = h_move['move']
-            return action
-        elif d_move['moved'] == True:
-            action['move'] = d_move['move']
-            return action
+        if v_move['priority'] > final_move['priority']:
+            final_move = v_move
+#        elif h_move['priority'] > final_move['priority']:
+#            final_move = h_move
+#        elif d_move['moved'] == True:
+#            action['move'] = d_move['move']
+#            return action
         else:
             continue
-        
-    action['move'] = random.choice(valid_moves(grid))
+
+    if final_move['priority'] == 0:
+        action['move'] = random.choice(valid_moves(grid))
+    else:
+        action['move'] = final_move['move']
     return action
 # Read state from driver, place moves.
 for line in sys.stdin:
