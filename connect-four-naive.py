@@ -42,6 +42,73 @@ def toemptyspace(grid, i, j):
     else:
         return toemptyspace(grid, i, j+1)
 
+def defensive_v(grid, i, j):
+    for n in range(1,4):
+        #Vertical defense
+        if j+n == int(height):
+            return 0
+        elif int(grid[i][j+n]) != oppon:
+            return 0
+        else:
+            continue
+    return int(height)*int(width)
+
+def defensive_hleft(grid, i, j):
+    for n in range(1,4):
+        if i-n < 0:
+            return 0
+        elif int(grid[i-n][j]) != oppon:
+            return 0
+        else: 
+            continue
+    return int(height)*int(width)
+
+def defensive_hright(grid, i, j):
+    for n in range(1,4):
+        if i+n == int(width):
+            return 0
+        elif int(grid[i+n][j]) != oppon:
+            return 0
+        else: 
+            continue
+    return int(height)*int(width)
+
+def defensive_hmid(grid, i, j):
+    for n in range(1,2):
+        if i+n == int(width):
+            return 0
+        elif i-n < 0:
+            return 0
+        elif int(grid[i+n][j]) != oppon:
+            return 0
+        elif int(grid[i-n][j]) != oppon:
+            return 0
+        else: 
+            continue
+        
+    return int(height)*int(width)
+    
+def defensive(grid, i, j):
+    movedef = {}
+    movedef['move'] = i
+
+    v_def = defensive_v(grid, i, j)
+    hleft_def = defensive_hleft(grid, i, j)
+    hright_def = defensive_hright(grid, i, j)
+    hmid_def = defensive_hmid(grid, i, j)
+    if v_def > 0:
+        movedef['priority'] = v_def
+    elif hleft_def > 0:
+        movedef['priority'] = hleft_def
+    elif hright_def > 0:
+        movedef['priority'] = hright_def
+    elif hmid_def > 0:
+        movedef['priority'] = hmid_def
+    else:
+        movedef['priority'] = 0
+    
+    return movedef
+
 #Priority check for vertical moves
 def vertical_priority(grid, i, j):
     for n in range(1,5):
@@ -94,38 +161,6 @@ def horizontal(grid, i, j):
         h_move['priority'] = (h_left + h_right)*2
     return h_move
 
-#Left-side diagonal moveset
-#def l_diag(grid, i, j):
-#    if grid[i+1][j-1] == int(player):
-#        moveset['moved'] = True
-#        moveset['move'] = i 
-#    elif grid[i+1][j+1] == int(player):
-#        moveset['moved'] = True
-#        moveset['move'] = i
-#    else:
-#        moveset['moved'] = False
-#    return moveset
-
-#Right-side diagonal moveset
-#def r_diag(grid, i, j):
-#    if grid[i-1][j-1] == int(player):
-#        moveset['moved'] = True
-#        moveset['move'] = i 
-#    elif grid[i-1][j+1] == int(player):
-#        moveset['moved'] = True
-#        moveset['move'] = i
-#    else:
-#        moveset['moved'] = False
-#    return moveset
-
-#Master diagonal moveset
-#def diagonal(grid, i, j):
-#    if i+1 < int(width):
-#        moveset = l_diag(grid, i, j)
-#    elif i > 0:
-#        moveset = r_diag(grid, i, j)
-#    return moveset
-
 #Master moveset function
 def valid_smart(grid):
     action = {}
@@ -137,11 +172,16 @@ def valid_smart(grid):
     for i in val_moves:
         j = 0
         j = toemptyspace(grid, i, j)
+        def_move = defensive(grid, i, j)
         v_move = vertical(grid, i, j)
         h_move = horizontal(grid, i, j)
 #        d_move = diagonal(grid, i, j)
 
-        if v_move['priority'] > final_move['priority']:
+        if def_move['priority'] > final_move['priority']:
+            final_move['priority'] = def_move['priority']
+            final_move['move'] = def_move['move']
+            break
+        elif v_move['priority'] > final_move['priority']:
             final_move['priority'] = v_move['priority']
             final_move['move'] = v_move['move']
             continue
