@@ -135,6 +135,8 @@ def defensive_diagur(grid, i, j):
         else:
             continue
 
+        return int(height)*int(width)
+
 #Priority check for vertical moves
 def defensive(grid, i, j):
     movedef = {}
