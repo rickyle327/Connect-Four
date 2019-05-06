@@ -42,6 +42,7 @@ def toemptyspace(grid, i, j):
     else:
         return toemptyspace(grid, i, j+1)
 
+#Defense code block
 def defensive_v(grid, i, j):
     for n in range(1,4):
         #Vertical defense
@@ -88,6 +89,53 @@ def defensive_hmid(grid, i, j):
         
     return int(height)*int(width)
     
+def defensive_diagdr(grid, i, j):
+    for n in range(1,4):
+        if j+n == int(height):
+            return 0
+        elif i+n == int(width):
+            return 0
+        elif int(grid[i+n][j+n]) != oppon:
+            return 0
+        else:
+            continue
+
+    return int(height)*int(width)
+
+def defensive_diagdl(grid, i, j):
+    for n in range(1,4):
+        if j+n == int(height):
+            return 0
+        elif i-n < 0:
+            return 0
+        elif int(grid[i-n][j+n]) != oppon:
+            return 0
+
+    return int(height)*int(width)
+
+def defensive_diagul(grid, i, j):
+    for n in range(1,4):
+        if j-n < 0:
+            return 0
+        elif i-n < 0:
+            return 0
+        elif int(grid[i-n][j-n]) != oppon:
+            return 0
+
+    return int(height)*int(width)
+
+def defensive_diagur(grid, i, j):
+    for n in range(1,4):
+        if j-n == int(height):
+            return 0
+        elif i+n == int(width):
+            return 0
+        elif int(grid[i+n][j-n]) != oppon:
+            return 0
+        else:
+            continue
+
+#Priority check for vertical moves
 def defensive(grid, i, j):
     movedef = {}
     movedef['move'] = i
@@ -96,6 +144,10 @@ def defensive(grid, i, j):
     hleft_def = defensive_hleft(grid, i, j)
     hright_def = defensive_hright(grid, i, j)
     hmid_def = defensive_hmid(grid, i, j)
+    dr_def = defensive_diagdr(grid, i, j)
+    dl_def = defensive_diagdl(grid, i, j)
+    ur_def = defensive_diagur(grid, i, j)
+    ul_def = defensive_diagul(grid, i, j)
     if v_def > 0:
         movedef['priority'] = v_def
     elif hleft_def > 0:
@@ -104,10 +156,19 @@ def defensive(grid, i, j):
         movedef['priority'] = hright_def
     elif hmid_def > 0:
         movedef['priority'] = hmid_def
+    elif dr_def > 0:
+        movedef['priority'] = dr_def
+    elif dl_def > 0:
+        movedef['priority'] = dl_def
+    elif ur_def > 0:
+        movedef['priority'] = ur_def
+    elif ul_def > 0:
+        movedef['priority'] = ul_def
     else:
         movedef['priority'] = 0
     
     return movedef
+
 
 #Priority check for vertical moves
 def vertical_priority(grid, i, j):
@@ -175,7 +236,6 @@ def valid_smart(grid):
         def_move = defensive(grid, i, j)
         v_move = vertical(grid, i, j)
         h_move = horizontal(grid, i, j)
-#        d_move = diagonal(grid, i, j)
 
         if def_move['priority'] > final_move['priority']:
             final_move['priority'] = def_move['priority']
@@ -189,9 +249,6 @@ def valid_smart(grid):
             final_move['priority'] = h_move['priority']
             final_move['move'] = h_move['move']
             continue
-#        elif d_move['moved'] == True:
-#            action['move'] = d_move['move']
-#            return action
         else:
             continue
 
