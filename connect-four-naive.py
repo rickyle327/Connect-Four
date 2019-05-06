@@ -23,7 +23,6 @@ sys.stderr.write('\n')
 sys.stderr.write("height = " + height)
 sys.stderr.write('\n')
 
-moveset = {}
 oppon = get_otherplayer(player)
 
 #Check available moves on current grid
@@ -48,7 +47,7 @@ def vertical_priority(grid, i, j):
     for n in range(1,5):
         if j+n == int(height):
             return n-1
-        if int(grid[i][j+n]) != int(player):
+        elif int(grid[i][j+n]) != int(player):
             return n-1
         else:
             continue
@@ -56,30 +55,44 @@ def vertical_priority(grid, i, j):
 
 #Generate a vertical moveset
 def vertical(grid, i, j):
-    moveset['move'] = i
-    moveset['priority'] = vertical_priority(grid, i, j)
-    return moveset
+    v_move = {}
+    v_move['move'] = i
+    v_move['priority'] = vertical_priority(grid, i, j)
+    return v_move
 
-#def h_priority_left(grid, i, j, n = 1):
-#    if i + n < 0:
-#        return n-1
-#    elif grid[i-n][j]:
+def h_priority_right(grid, i, j):
+    for n in range(1,5):
+        if i+n == int(width):
+            return n-1
+        elif int(grid[i+n][j]) != int(player):
+            return n-1
+        else: 
+            continue
+    return 0
 
-
-#def horizontal_priority(grid, i, j):
-#    final_h = 0
+def h_priority_left(grid, i, j):
+    for n in range(1,5):
+        if i-n < 0:
+            return n-1
+        elif int(grid[i-n][j]) != int(player):
+            return n-1
+        else: 
+            continue
+    return 0
 
 #Check for a valid horizontal move
 def horizontal(grid, i, j):
-    if i+1 < int(width) and grid[i+1][j] == int(player):
-        moveset['priority'] = 1
-        moveset['move'] = i   
-    elif i > 0 and grid[i-1][j] == int(player):
-        moveset['priority'] = 1
-        moveset['move'] = i
+    h_move = {}
+    h_move['move'] = i
+    h_left = h_priority_left(grid, i, j)
+    h_right = h_priority_right(grid, i, j)
+    if h_left > h_right:
+        h_move['priority'] = h_left
+    elif h_left < h_right:
+        h_move['priority'] = h_right
     else:
-        moveset['priority'] = 0
-    return moveset
+        h_move['priority'] = (h_left + h_right)*2
+    return h_move
 
 #Left-side diagonal moveset
 #def l_diag(grid, i, j):
